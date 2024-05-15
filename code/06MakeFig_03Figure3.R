@@ -38,8 +38,6 @@ Con <- data.frame(tapply(Table3$PercentCon, list(Table3$FocalSp, Table3$LifeStag
 Con <- Con[c(2,6,5,1,3,8,4,7), c(4,5,2,3,1,6)]
 
 #### make fig ####
-dev.off()
-
 if(saveFiles){
     tiff(
         filename = "output/06figures/Figure_3.tiff", 

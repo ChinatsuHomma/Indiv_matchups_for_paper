@@ -32,8 +32,6 @@ SpV2 <- c(1:6,8) # Species-specific vectors (except Cercidiphyllum)
 
 
 #### make fig ####
-dev.off()
-
 if(saveFiles){
   tiff(
     filename = "output/06figures/Figure_2.tiff", 

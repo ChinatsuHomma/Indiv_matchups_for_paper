@@ -76,8 +76,6 @@ Segment$lty[is.na(Segment$lty)] <- 0
 
 
 #### Plot ####
-dev.off()
-
 if(saveFiles == 1){
     tiff(
         filename = "output/06figures/Figure_4.tiff", 

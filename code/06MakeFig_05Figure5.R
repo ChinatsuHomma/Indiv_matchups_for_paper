@@ -35,8 +35,6 @@ Iso <- Iso[c(2,6,5,1,3,8,4,7), c(4,5,2,3,1,6)]
 
 
 #### make fig ####
-dev.off()
-
 if(saveFiles){
     tiff(
         filename = "output/06figures/Figure_5.tiff", 
