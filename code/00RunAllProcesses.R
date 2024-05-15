@@ -5,7 +5,7 @@
 if(!dir.exists("data")){
 
     message(
-        'The "data" folder does not exist.\n Check working directory or create "data" folder.\n Please create "data" folder at the same level as the "code" folders.\n All data from Zenodo () should be saved in the "data" folder.\n Please set the working directory to the same level as the "code" and "data" folders.\n'
+        'The "data" folder does not exist.\n Check working directory or create "data" folder.\n Please create "data" folder at the same level as the "code" folders.\n All data from Zenodo (10.5281/zenodo.11198410) should be saved in the "data" folder.\n Please set the working directory to the same level as the "code" and "data" folders.\n'
     )
 
 } else {
