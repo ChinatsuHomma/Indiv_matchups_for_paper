@@ -1,0 +1,9 @@
+cff-version: 1.0.0
+message: "Cite as"
+authors:
+  - family-names: Homma
+    given-names: Chinatsu
+    orcid: https://orcid.org/0000-0002-7493-4581
+    affiliation: "Akita Prefectural University"
+title: "Indiv_matchups_for_paper"
+doi: 10.5281/zenodo.11198410
