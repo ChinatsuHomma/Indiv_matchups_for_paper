@@ -14,7 +14,7 @@ if(!dir.exists("data")){
         "output",
         "output/01subjects", "output/02matchupList", "output/03matchupTable",
         "output/04allMatchupTable", "output/05forFigure", "output/06figures",
-        "output/07GLM"
+        "output/06figures/PCAsummary","output/07GLM"
     )
     folderN <- length(folder)
     i <- 1
