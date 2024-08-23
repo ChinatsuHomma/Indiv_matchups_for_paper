@@ -200,7 +200,18 @@ Table2       <- Table2[order(Table2$Total, decreasing = TRUE), ]
 rownames(Table2) <- 1:nrow(Table2)
 
 # Appendix
-Appendix1 <- Table2
+Appendix1 <- rbind(
+  Table2[which(Table2$Sp %in% c("PR", "FC", "AP", "AT", "UL", "CJ", "QC")), ],
+  Table2[which(Table2$Sp %in% c("Assp")), ]
+)
+Appendix1 <- rbind(
+  Appendix1,
+  Table2[which(Table2$Sp %in% c("Acam", "Acja", "Acsi")), ]
+)
+Appendix1 <- rbind(
+  Appendix1,
+  Table2[-which(Table2$Sp %in% c("PR", "FC", "AP", "AT", "UL", "CJ", "QC", "Assp", "Acam", "Acja", "Acsi")), ]
+)
 
 # replace NA with "-"
 Appendix1[Appendix1 == 0] <- "-"
@@ -209,8 +220,8 @@ Appendix1[is.na(Appendix1)] <- "-"
 
 
 # Shortening for Table2
-OtherSp <- Table2[-(1:8), ]
-Table2  <- Table2[1:8, ]
+OtherSp <- Table2[-which(Table2$Sp %in% c("PR", "FC", "AP", "AT", "UL", "CJ", "QC")), ]
+Table2  <- Table2[which(Table2$Sp %in% c("PR", "FC", "AP", "AT", "UL", "CJ", "QC")), ]
 OtherSp <- data.frame("Sp" = "Other species", t(colSums(OtherSp[ ,-1], na.rm = TRUE)))
 Table2  <- rbind(Table2, OtherSp)
 

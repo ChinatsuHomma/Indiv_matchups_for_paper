@@ -19,11 +19,12 @@ Appendix1 <- read.csv("output/01subjects/00Appendix1_sampleSizes.csv")
 MatchupList <- lapply(Files, read.csv)
 names(MatchupList) <- LifeStage
 
-StudySp <- Table2$Sp[-9]
+StudySp  <- Table2$Sp[-length(Table2$Sp)]
+StudySpN <- length(StudySp)
 
 #### result table ####
 # summarize how many *species* were matched-up per individual of focal species
-NumMatchupSp <- as.data.frame.matrix(matrix(rep(NA), nrow = 8, ncol = 6))
+NumMatchupSp <- as.data.frame.matrix(matrix(rep(NA), nrow = StudySpN, ncol = 6))
 colnames(NumMatchupSp) <- LifeStage
 rownames(NumMatchupSp) <- StudySp
 
@@ -46,7 +47,7 @@ y <- 1 # choose years (seedling only)
 for(l in 1:6){
     List_tmp <- MatchupList[[l]]
 
-    for(s in 1:8){
+    for(s in 1:StudySpN){
         # extract a study species
         List_Sp_tmp <- List_tmp[List_tmp$Focal_Sp == StudySp[s], ]
 

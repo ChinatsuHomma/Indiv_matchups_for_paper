@@ -19,16 +19,17 @@ LifeStage <- c(
     "Poles", "Juveniles", "Subadults"
 )
 Sp <- c(
-    "Acer spp.", "Pterocarya", "Fagus", 
+    "Pterocarya", "Fagus", 
     "A. pictum", "Aesculus", "Ulmus", 
     "Cercidiphyllum", "Quercus"
 )
+SpN <- length(Sp)
 
 # Objects for plot
 mag  <- 1 # Magnification of figure
 pch  <- c(0,1,2,3,5,6,7,8,10,14) # select markers
-SpV  <- c(1:8)   # Species-specific vectors
-SpV2 <- c(1:6,8) # Species-specific vectors (except Cercidiphyllum)
+SpV  <- c(1:SpN)   # Species-specific vectors
+SpV2 <- SpV[Sp != "Cercidiphyllum"] # Species-specific vectors (except Cercidiphyllum)
 
 
 #### make fig ####
@@ -116,7 +117,7 @@ matplot(
     t(NumMatchupIndiv[SpV2, ]),
     type = "o",
     lty  = 1,
-    pch  = pch[-7],
+    pch  = pch[-6],
     lwd  = 1,
     col  = rgb(UC[SpV2, 4:6]),
     cex  = 0.8 * mag,

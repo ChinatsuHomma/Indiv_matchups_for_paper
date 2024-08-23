@@ -24,6 +24,9 @@ for(l in 1:6){
 Table2[Table2 == "-"] <- 0
 Appendix1[Appendix1 == "-"] <- 0
 
+#### subject species ####
+SubSp  <- Table2$Sp
+SubSpN <- length(SubSp) - 1
 
 #### Merge All Tables ####
 #Table3_tmp <- do.call("rbind", MatchupTable)
@@ -34,15 +37,15 @@ l <- 1 # choose Life stage
 order <- 0 # for ordering Table 3
 
 # frame of Table3
-Table3 <- as.data.frame.matrix(matrix(rep(NA), nrow = 8*6, ncol = 18))
+Table3 <- as.data.frame.matrix(matrix(rep(NA), nrow = (SubSpN*6), ncol = (SubSpN + 10)))
 colnames(Table3) <- c(
     "Order", "FocalSp", "LifeStage", "NumIndiv",
-    Table2$Sp,
+    SubSp,
     "ConMatchups", "HeteroMatchups", "PercentCon",
     "Isolations", "PercentIso"
 )
 
-for(s in 1:8){
+for(s in 1:SubSpN){
     for(l in 1:6){
         order <- order + 1
 
@@ -50,9 +53,9 @@ for(s in 1:8){
         ## Name of species s
         Sp_tmp         <- MatchupTable[[l]][s,1]
         ## Matchup freq between individuals of the species s and that of study species
-        StudySp_tmp    <- MatchupTable[[l]][s,c(2:9)]
+        StudySp_tmp    <- MatchupTable[[l]][s,c(2:(1 + SubSpN))]
         ## Matchup freq between individuals of the species s and that of NOT study species
-        OtherSp_tmp    <- MatchupTable[[l]][s,c(10:(allSpN + 1))]
+        OtherSp_tmp    <- MatchupTable[[l]][s,c((1 + SubSpN + 1):(allSpN + 1))]
         ## Sum up matchup freq with other species
         SumOtherSp_tmp <- rowSums(OtherSp_tmp, na.rm = TRUE)
         ## Isolated individual of the species s
@@ -79,7 +82,6 @@ for(s in 1:8){
         )
     }
 }
-
 
 if(saveFiles){
   write.csv(Table3, "output/04allMatchupTable/00Table3_AllMatchupTable.csv", row.names = FALSE)

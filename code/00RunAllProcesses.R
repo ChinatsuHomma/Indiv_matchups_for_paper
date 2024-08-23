@@ -43,11 +43,9 @@ if(!dir.exists("data")){
     ##### subadults #####
     source("code/01DataPrep_06Subadults.R")
 
-
     #### Table 2 ####
     # number of samples for each life stage
     source("code/02Table2_NumSamples.R")
-
 
     #### Table 3 ####
     # counting matchups
@@ -61,7 +59,7 @@ if(!dir.exists("data")){
 
     ## summarize
     source("code/04Table3_AllMatchupTable.R")
-
+    source("code/04Appendix3_Rank.R")
 
     #### Make figures ####
     ##### Organize data for make figures #####
@@ -81,6 +79,6 @@ if(!dir.exists("data")){
     source("code/06MakeFig_05Figure5.R")
 
     #### GLM ####
-    source("code/07Analysis_00prepGLM.R")
-    source("code/07Analysis_01GLM.R")
+    source("code/07Analysis_00prepGLMv2.0.R")
+    source("code/07Analysis_01GLMv2.0.R")
 }

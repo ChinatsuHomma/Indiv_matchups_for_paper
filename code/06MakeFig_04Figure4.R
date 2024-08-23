@@ -1,14 +1,25 @@
-##### Make Figure 5 #####
+##### PCA with {vegan} #####
 #### initial settings ####
 rm(list=ls(all=TRUE)) # clear all objects
 saveFiles <- TRUE     # Do you want save result file?
 #saveFiles <- FALSE
+scaling <- 1 # 1 = 1, 2 = 2, 0 = both
+
+#### packages ####
+library("vegan")
+
+#### functions ####
+source("code/fromBook/cleanplot.pca.R") # modified only about graphic params
 
 #### Read data ####
-HeteroMatchup <- read.csv("output/05forFigure/00DataForFig4_01HeteroMatchups.csv")
-rownames(HeteroMatchup) <- HeteroMatchup$NumSet
-HeteroMatchup <- as.matrix(HeteroMatchup[ , c(6:11)]) # for PCA
+All     <- read.csv("output/05forFigure/00DataForFig4_02AllMatchups.csv")
+Hetero  <- read.csv("output/05forFigure/00DataForFig4_03HeteroMatchups.csv")
 
+#### organize data ####
+rownames(All) <- All$NumSet
+All <- as.matrix(All[ , c(6:11)]) # for PCA
+rownames(Hetero) <- Hetero$NumSet
+Hetero <- as.matrix(Hetero[ , c(6:11)]) # for PCA
 
 #### initial object ####
 LifeStage <- c(
@@ -16,135 +27,209 @@ LifeStage <- c(
     "Poles", "Juveniles", "Subadults"
 )
 Sp <- c(
-    "Acer spp.", "Pterocarya", "Fagus", 
+    "Pterocarya", "Fagus", 
     "A. pictum", "Aesculus", "Ulmus", 
     "Cercidiphyllum ", "Quercus"
 )
 
+##### pairs #####
+comb <- as.data.frame.matrix(t(combn(c(1:7), 2)))
+seg  <- data.frame(
+    "pair1" = paste(comb$V1, comb$V2, sep = "-"),
+    "pair2" = paste(comb$V2, comb$V1, sep = "-")
+)
 
 #### principal component analysis ####
-Result_PCA <- prcomp(HeteroMatchup, scale = FALSE) # as a variance-covariance matrix
+PCA_All <- rda(All, scale = FALSE) 
 
-summary(Result_PCA)
-Result_PCA$rotation
-Result_PCA$x
+summary(PCA_All) # scaling = 2
+summary(PCA_All, scale = 1) # scaling = 1
 
+screeplot(PCA_All, bstick = TRUE, npcs = length(PCA_All$CA$eig), las = 2)
+
+PCA_Hetero <- rda(Hetero, scale = FALSE) 
+
+summary(PCA_Hetero) # scaling = 2
+summary(PCA_Hetero, scale = 1) # scaling = 1
+
+screeplot(PCA_Hetero, bstick = TRUE, npcs = length(PCA_Hetero$CA$eig), las = 2)
+
+#### plot ####
+# plot    
 if(saveFiles){
-    write.csv(summary(Result_PCA)[6], "output/06figures/PCAsummary/01PCAsummary.csv")
-    write.csv(Result_PCA$rotation, "output/06figures/PCAsummary/02PCArotation.csv")
-    write.csv(Result_PCA$x, "output/06figures/PCAsummary/03PCAdetails.csv")
-}
-
-
-# Objects for plot
-EachPair <- data.frame(Result_PCA$x[ ,c(1,2)])
-EachPair$pair1 <- rownames(EachPair)
-EachPair$pair2 <- rownames(EachPair)
-
-Segment <- as.data.frame.matrix(t(combn(c(1:8), 2)))
-Segment$pair1 <- paste(Segment$V1,  Segment$V2, sep = "-")
-Segment$pair2 <- paste(Segment$V2,  Segment$V1, sep = "-")
-Segment$pair  <- paste(Segment$pair1, Segment$pair2, sep = "_")
-
-Segment <- merge(
-    Segment, EachPair[ ,c(1,2,3)],
-    all.x = TRUE, all.y = FALSE,
-    by = "pair1"
-)
-colnames(Segment)[colnames(Segment) == "PC1"] <- "x1"
-colnames(Segment)[colnames(Segment) == "PC2"] <- "y1"
-
-Segment <- merge(
-    Segment, EachPair[ ,c(1,2,4)],
-    all.x = TRUE, all.y = FALSE,
-    by = "pair2"
-)
-colnames(Segment)[colnames(Segment) == "PC1"] <- "x2"
-colnames(Segment)[colnames(Segment) == "PC2"] <- "y2"
-
-# choose pair to draw
-choose <- data.frame(
-    "lty"   = rep(1),
-    "pair1" = c("1-3", "1-4", "2-5", "2-6", "2-7", "2-8", "3-6", "7-8")
-)
-Segment <- merge(
-    Segment, choose,
-    all.x = TRUE, all.y = FALSE,
-    by = "pair1"
-)
-Segment$lty[is.na(Segment$lty)] <- 0
-
-
-#### Plot ####
-if(saveFiles == 1){
+    dev.off()
     tiff(
         filename = "output/06figures/Figure_4.tiff", 
-        height = 3600, width = 3600, units = "px", res = 600, compression = "lzw"
+        height = 1200, #switch((scaling + 1), 3600, 1800, 1800),
+        width  = 3600, units = "px", res = 600, compression = "lzw"
     )
+    size <- 0.5
 } else {
-    dev.new(width=25, height=25)
-}
-
-par(mai = c(0.8,0.8,0.8,0.8))
-par(
-    plt = c(0.15,0.95,0.15,0.95),
-    fig = c(0,1,0,1),
-    xpd = TRUE
-)
-
-plot(
-    EachPair$PC1, EachPair$PC2,
-    pch  = NA,
-    xlim = c(-50,50),
-    ylim = c(-40,40),
-    xlab = paste("PC1 (", sprintf(summary(Result_PCA)[[6]][2,1]*100, fmt = "%#.1f"), " %)", sep = ""),
-    ylab = paste("PC2 (", sprintf(summary(Result_PCA)[[6]][2,2]*100, fmt = "%#.1f"), " %)", sep = ""),
-    asp = 1
-)
-
-segments(
-    Segment$x1, Segment$y1,
-    Segment$x2, Segment$y2,
-    lty = Segment$lty,
-    lwd = 1,
-    col = "#20B2AA"
-)
-
-scale <- 30
-i = 1
-for(i in 1:6){
-    arrows(
-        0, 0, 
-        Result_PCA$rotation[i,1] * scale,
-        Result_PCA$rotation[i,2] * scale, 
-        length = 0.1, 
-        col = "red"
+    dev.new(
+        height = 2.67, #switch((scaling + 1), 8, 4, 4),
+        width  = 8
     )
+    size <- 0.85
 }
 
-text(
-    EachPair$PC1, EachPair$PC2,
-    rownames(EachPair),
-    cex = 0.8
-)
+par(mfrow = c(1, 3), mar = c(3.1, 3.1, 0.2, 0.2))
 
-text(
-    Result_PCA$rotation[ ,1] * scale + Result_PCA$rotation[ ,1] * scale / 5,
-    Result_PCA$rotation[ ,2] * scale + Result_PCA$rotation[ ,2] * scale / 5, 
-    LifeStage,
-    cex = 0.8,
-    col = "red"
-)
+i <- 1
+for(i in 1:2){
+    if(i == 1){
+        PCA.tmp <- PCA_All
+    } else {
+        PCA.tmp <- PCA_Hetero
+    }
 
-par(font = 3) # Italic
-legend(
-    "topright",
-    legend = Sp,
-    pch = c("1", "2", "3", "4", "5", "6", "7", "8"),
-    cex = 1
-)
-par(font = 1) # Normal font
+    # from cleanplot.pca() to draw segments
+    vec <- select.spe <- length(PCA.tmp$colsum)
+    n <- nrow(PCA.tmp$CA$u)
+    eig.val = PCA.tmp$CA$eig          # Eigenvalues of Y-hat
+    Lambda = diag(eig.val)            # Diagonal matrix of eigenvalues
+    Z.sc2 = PCA.tmp$CA$u * sqrt(n - 1)# Site scores, scaling=2
+    Z.sc1 = Z.sc2 %*% Lambda ^ (0.5)  # Site scores, scaling=1
+    U.sc1 = PCA.tmp$CA$v              # Species scores, scaling=1
+    U.sc2 = U.sc1 %*% Lambda ^ (0.5)  # Species scores, scaling=2
 
-if(saveFiles == 1){
-  dev.off()
+    # For scaling=1
+    sit.sc1 <- data.frame(Z.sc1)
+    spe.sc1 <- U.sc1[vec,]
+    sit.sc1$pair1 <- rownames(sit.sc1) # for merge
+    sit.sc1$pair2 <- rownames(sit.sc1) # for merge
+
+    # For scaling=2
+    sit.sc2 <- data.frame(Z.sc2)
+    spe.sc2 <- U.sc2[vec,]
+    sit.sc2$pair1 <- rownames(sit.sc2) # for merge
+    sit.sc2$pair2 <- rownames(sit.sc2) # for merge
+
+    # for segments
+    ## scaling 1 and pair 1
+    seg.tmp <- merge(
+        seg, sit.sc1[ , c(1,2,7)],
+        all.x = TRUE, all.y = FALSE,
+        by = "pair1"
+    )
+    colnames(seg.tmp)[c(3,4)] <- c("X_sca1_pair1", "Y_sca1_pair1")
+
+    ## scaling 1 and pair 2
+    seg.tmp <- merge(
+        seg.tmp, sit.sc1[ , c(1,2,8)],
+        all.x = TRUE, all.y = FALSE,
+        by = "pair2"
+    )
+    colnames(seg.tmp)[c(5,6)] <- c("X_sca1_pair2", "Y_sca1_pair2")
+
+    ## scaling 2 and pair 1
+    seg.tmp <- merge(
+        seg.tmp, sit.sc2[ , c(1,2,7)],
+        all.x = TRUE, all.y = FALSE,
+        by = "pair1"
+    )
+    colnames(seg.tmp)[c(7,8)] <- c("X_sca2_pair1", "Y_sca2_pair1")
+
+    ## scaling 1 and pair 2
+    seg.tmp <- merge(
+        seg.tmp, sit.sc2[ , c(1,2,8)],
+        all.x = TRUE, all.y = FALSE,
+        by = "pair2"
+    )
+    colnames(seg.tmp)[c(9,10)] <- c("X_sca2_pair2", "Y_sca2_pair2")
+
+    if(scaling != 2){
+        # scaling 1
+        ## draw nothing
+        cleanplot.pca(
+            PCA.tmp, scaling = 1, mar.percent = 0, 
+            plot.sites  = FALSE, plot.spe  = FALSE, 
+            label.sites = FALSE, label.spe = FALSE,
+            cex = size#,
+            #cex.lab = size
+        )
+
+        segments(
+            seg.tmp$X_sca1_pair1, seg.tmp$Y_sca1_pair1,
+            seg.tmp$X_sca1_pair2, seg.tmp$Y_sca1_pair2,
+            col = "#00a0e9"
+        )
+
+        par(new = TRUE)
+        cleanplot.pca(PCA.tmp, scaling = 1, mar.percent = 0, plot.sites = FALSE, cex = size)
+
+        mtext(
+            paste("PC", 1, " (", round(summary(PCA.tmp)$cont$importance[2,1] * 100, digits = 1),"%)", sep = ""),
+            side = 1, line = 2, 
+            cex  = size * ifelse(saveFiles, 1.25, 1)
+        )
+        mtext(
+            paste("PC", 2, " (", round(summary(PCA.tmp)$cont$importance[2,2] * 100, digits = 1),"%)", sep = ""),
+            side = 2, line = 2,
+            cex  = size * ifelse(saveFiles, 1.25, 1)
+        )
+
+        mtext(
+            switch(i, "a)", "c)"), 
+            side = 3, 
+            line = ifelse(saveFiles, -1, -1.25),
+            adj = 0.025,
+            cex = size * ifelse(saveFiles, 1.25, 1)
+        )
+    }
+
+    if(i == 1){
+        rect(
+            -60, -60, 40, 40,
+            lty = 2
+        )
+
+        # scaling 1 expanded
+        ## draw nothing
+        cleanplot.pca(
+            PCA.tmp, scaling = 1, mar.percent = 0, 
+            plot.sites  = FALSE, plot.spe  = FALSE, 
+            label.sites = FALSE, label.spe = FALSE,
+            xlim = c(-60,40), ylim = c(-60,40),
+            cex = size#,
+            #cex.lab = size
+        )
+
+        segments(
+            seg.tmp$X_sca1_pair1, seg.tmp$Y_sca1_pair1,
+            seg.tmp$X_sca1_pair2, seg.tmp$Y_sca1_pair2,
+            col = "#00a0e9"
+        )
+
+        par(new = TRUE)
+        cleanplot.pca(
+            PCA.tmp, scaling = 1, mar.percent = 0, 
+            plot.sites  = FALSE, label.spe = FALSE,
+            plot.spe  = FALSE, 
+            xlim = c(-60,40), ylim = c(-60,40),
+            cex = size
+        )
+
+        mtext(
+            paste("PC", 1, " (", round(summary(PCA.tmp)$cont$importance[2,1] * 100, digits = 1),"%)", sep = ""),
+            side = 1, line = 2, 
+            cex  = size * ifelse(saveFiles, 1.25, 1)
+        )
+        mtext(
+            paste("PC", 2, " (", round(summary(PCA.tmp)$cont$importance[2,2] * 100, digits = 1),"%)", sep = ""),
+            side = 2, line = 2,
+            cex  = size * ifelse(saveFiles, 1.25, 1)
+        )
+
+        mtext(
+            "b)", 
+            side = 3, 
+            line = ifelse(saveFiles, -1, -1.25),
+            adj = 0.025,
+            cex = size * ifelse(saveFiles, 1.25, 1)
+        )
+    }
+}
+
+if(saveFiles){
+    dev.off()
 }
