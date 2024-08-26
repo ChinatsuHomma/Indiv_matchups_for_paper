@@ -72,19 +72,20 @@ EmConSp <- pairs(EmConspecific, simple = "Focal_Sp")
 #cld(EmConLS, alpha = 0.001, decreasing = FALSE, Letters = LETTERS)
 #cld(EmConSp, alpha = 0.001, decreasing = FALSE, Letters = LETTERS)
 
-pwpp(
-    EmConspecific,
-    sort = FALSE,
-    by = "LifeStage",
-    plim = c(0, 0.1)
-)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+#pwpp(
+#    EmConspecific,
+#    sort = FALSE,
+#    by = "LifeStage",
+#    plim = c(0, 0.1)
+#)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
-pwpp(
-    EmConspecific,
-    sort = FALSE,
-    by = "Focal_Sp"
-)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+#pwpp(
+#    EmConspecific,
+#    sort = FALSE,
+#    by = "Focal_Sp"
+#)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
+##### save results #####
 sink("output/07GLM/EmConspecificLifeStage.txt")
 EmConLS
 sink()
@@ -124,19 +125,20 @@ EmIsoSp <- pairs(EmIsolation, simple = "Focal_Sp")
 #cld(EmIsoLS, alpha = 0.001, decreasing = FALSE, Letters = LETTERS)
 #cld(EmIsoSp, alpha = 0.001, decreasing = FALSE, Letters = LETTERS)
 
-pwpp(
-    EmIsolation,
-    sort = FALSE,
-    by = "LifeStage",
-    plim = c(0, 0.1)
-)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+#pwpp(
+#    EmIsolation,
+#    sort = FALSE,
+#    by = "LifeStage",
+#    plim = c(0, 0.1)
+#)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
-pwpp(
-    EmIsolation,
-    sort = FALSE,
-    by = "Focal_Sp"
-)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+#pwpp(
+#    EmIsolation,
+#    sort = FALSE,
+#    by = "Focal_Sp"
+#)+ ggplot2::theme_bw() + ggplot2::theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
+##### save results #####
 sink("output/07GLM/EmIsolationLifeStage.txt")
 EmIsoLS
 sink()
