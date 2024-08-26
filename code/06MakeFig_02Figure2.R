@@ -20,7 +20,7 @@ LifeStage <- c(
 )
 Sp <- c(
     "Pterocarya", "Fagus", 
-    "A. pictum", "Aesculus", "Ulmus", 
+    "Acer", "Aesculus", "Ulmus", 
     "Cercidiphyllum", "Quercus"
 )
 SpN <- length(Sp)

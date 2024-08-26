@@ -20,7 +20,7 @@ LifeStage <- c(
 )
 Sp <- c(
     "Pterocarya", "Fagus", 
-    "A. pictum", "Aesculus", "Ulmus", 
+    "Acer", "Aesculus", "Ulmus", 
     "Cercidiphyllum", "Quercus"
 )
 SpN <- length(Sp)
@@ -181,7 +181,7 @@ for(sp in 1:plots){
         # y label
         mtext(
             side = 2,
-            "% conspecific matchups",
+            "% conspecific encounters",
             line = 2
         )
     }
