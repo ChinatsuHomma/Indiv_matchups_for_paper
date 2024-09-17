@@ -11,12 +11,19 @@ if(!dir.exists("data")){
 } else {
 
     message("#### Install packages if it needs ####\n")
-    packages <- c(
+    packages0 <- c(
         "vegan", "stringr", "car", "multcomp",
         "emmeans", "easystats", "dplyr", "ggplot2"
     )
-    packages <- packages[!(packages %in% library()$results[ ,1])]
-    if(length(packages) > 0){lapply(packages, install.packages)}
+    packages <- packages0[!(packages0 %in% library()$results[ ,1])]
+    if(length(packages) > 0){message(paste(
+        "\nOur processes need these packages;\n'",
+        paste(packages0, collapse = "', '"),
+        "'.\n\nYou need to install;\n '",
+        paste(packages, collapse = "', '"),
+        "'.\n",
+        sep = ""
+    ))}
 
     message("#### Create folders ####\n")
     folder <- c(
