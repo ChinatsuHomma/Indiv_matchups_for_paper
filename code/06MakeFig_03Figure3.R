@@ -6,7 +6,7 @@ saveFiles <- TRUE     # Do you want save result file?
 
 #### Read data ####
 Table3 <- read.csv("output/04allMatchupTable/00Table3_AllMatchupTable.csv", row.names = 1)
-
+Table2 <- read.csv("output/01subjects/00Table2_sampleSizes.csv")
 
 # Color palette
 UC <- read.csv("data/universal_color.csv",row.names = 1)
@@ -19,23 +19,23 @@ LifeStage <- c(
     "Poles", "Juveniles", "Subadults"
 )
 Sp <- c(
-    "Acer spp.", "Pterocarya", "Fagus", 
-    "A. pictum", "Aesculus", "Ulmus", 
+    "Pterocarya", "Fagus", 
+    "Acer", "Aesculus", "Ulmus", 
     "Cercidiphyllum", "Quercus"
 )
+SpN <- length(Sp)
 alphabet <- c(
   "a)",  "b)",  "c)",  "d)",
-  "e)",  "f)",  "g)",  "h)"
+  "e)",  "f)",  "g)"
 )
 
 # Objects for plot
-SpV <- c(1:8)   # Species-specific vectors
-SpN <- 8
+SpV <- c(1:SpN)   # Species-specific vectors
 
 
 #### organize the data ####
 Con <- data.frame(tapply(Table3$PercentCon, list(Table3$FocalSp, Table3$LifeStage), sum))
-Con <- Con[c(2,6,5,1,3,8,4,7), c(4,5,2,3,1,6)]
+Con <- Con[Table2$Sp[-length(Table2$Sp)], gsub(LifeStage, pattern = "-sapling", replacement = "Sapling")]
 
 #### make fig ####
 if(saveFiles){
@@ -49,7 +49,7 @@ if(saveFiles){
 
 max <- 100
 
-mat_tmp <- c(9,1,1,2,2,3,3,4,4,9,1,1,2,2,3,3,4,4,9,5,5,6,6,7,7,8,8,9,5,5,6,6,7,7,8,8,9,9,9,9,9,9,9,9,9)
+mat_tmp <- c(8,1,1,2,2,3,3,4,4,8,1,1,2,2,3,3,4,4,8,5,5,6,6,7,7,8,8,8,5,5,6,6,7,7,8,8,8,8,8,8,8,8,8,8,8)
 mat <- matrix(mat_tmp, 5, 9, byrow = TRUE)
 
 # graphics parameters
@@ -66,14 +66,15 @@ sp      <- 1
 plots   <- SpN + 1
 dilute  <- 0.95 # value about color
 hatched <- TRUE
+hatched <- FALSE
 
 for(sp in 1:plots){
     if(sp != plots){
         # x label
         xlabels <- switch(
             sp,
-            FALSE, FALSE, FALSE, FALSE,
-            LifeStage, LifeStage, LifeStage, LifeStage
+            FALSE, FALSE, FALSE, LifeStage,
+            LifeStage, LifeStage, LifeStage
         )
         # y label
         ylabels <- switch(
@@ -108,7 +109,8 @@ for(sp in 1:plots){
             ),
             las  = 1,
             yaxt = "n",
-            col  = c(rgb(col1), rgb(col2))
+            #col  = c(rgb(col1), rgb(col2))
+            col  = c(rgb(col1), rgb(col1, alpha = 0.2))
         )
 
         # plot with diagonal lines
@@ -179,7 +181,7 @@ for(sp in 1:plots){
         # y label
         mtext(
             side = 2,
-            "% conspecific matchups",
+            "% conspecific encounters",
             line = 2
         )
     }

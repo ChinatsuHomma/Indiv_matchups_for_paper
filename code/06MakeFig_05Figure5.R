@@ -6,6 +6,7 @@ saveFiles <- TRUE     # Do you want save result file?
 
 #### Read data ####
 Table3 <- read.csv("output/04allMatchupTable/00Table3_AllMatchupTable.csv", row.names = 1)
+Table2 <- read.csv("output/01subjects/00Table2_sampleSizes.csv")
 
 # Color palette
 UC <- read.csv("data/universal_color.csv",row.names = 1)
@@ -18,21 +19,21 @@ LifeStage <- c(
     "Poles", "Juveniles", "Subadults"
 )
 Sp <- c(
-    "Acer spp.", "Pterocarya", "Fagus", 
-    "A. pictum", "Aesculus", "Ulmus", 
+    "Pterocarya", "Fagus", 
+    "Acer", "Aesculus", "Ulmus", 
     "Cercidiphyllum", "Quercus"
 )
+SpN <- length(Sp)
 
 # Objects for plot
 mag  <- 1 # Magnification of figure
 pch  <- c(0,1,2,3,5,6,7,8,10,14) # select markers
-SpV  <- c(1:8)   # Species-specific vectors
+SpV  <- c(1:SpN)   # Species-specific vectors
 
 
 #### organize the data ####
 Iso <- data.frame(tapply(Table3$PercentIso, list(Table3$FocalSp, Table3$LifeStage), sum))
-Iso <- Iso[c(2,6,5,1,3,8,4,7), c(4,5,2,3,1,6)]
-
+Iso <- Iso[Table2$Sp[-length(Table2$Sp)], gsub(LifeStage, pattern = "-sapling", replacement = "Sapling")]
 
 #### make fig ####
 if(saveFiles){

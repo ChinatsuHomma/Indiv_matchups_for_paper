@@ -13,7 +13,7 @@ dSmallSaplingsFP  <- read.csv("data/02SaplingsFloodPlain.csv") # census
 dSmallSaplings2x2 <- dSmallSaplings2x2[is.na(dSmallSaplings2x2$H18) == FALSE, ]
 
 # not use current year seedlings
-dSmallSaplings2x2 <- dSmallSaplings2x2[dSmallSaplings2x2$current == 0, ]
+dSmallSaplings2x2 <- dSmallSaplings2x2[dSmallSaplings2x2$current18 == 0, ]
 
 # use small individuals (GBH and DBH not measured and 30 < height < 100 cm)
 dSmallSaplings2x2 <- dSmallSaplings2x2[is.na(dSmallSaplings2x2$gbh18), ]
@@ -26,7 +26,7 @@ dSmallSaplings2x2 <- dSmallSaplings2x2[dSmallSaplings2x2$H18 < 100, ]
 dSmallSaplingsFP <- dSmallSaplingsFP[is.na(dSmallSaplingsFP$height2019) == FALSE, ]
 
 # not use current year seedlings
-dSmallSaplingsFP <- dSmallSaplingsFP[dSmallSaplingsFP$current == 0, ]
+dSmallSaplingsFP <- dSmallSaplingsFP[dSmallSaplingsFP$current19 == 0, ]
 
 # use small individuals (DBH not measured and 30 < height < 100 cm)
 dSmallSaplingsFP <- dSmallSaplingsFP[is.na(dSmallSaplingsFP$dbh2019), ]

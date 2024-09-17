@@ -84,8 +84,8 @@ for(y in 1:yearsN){
                 "Focal_y"     = focal_tmp$Plot_y, 
                 "Focal_ID"    = focal_tmp$ID, 
                 "Focal_Sp"    = focal_tmp$Sp, 
-                "Focal_H"     = NA,
-                "Opponent_ID" = focal_tmp[ ,5],
+                "Focal_H"     = focal_tmp[ ,5],
+                "Opponent_ID" = NA,
                 "Opponent_Sp" = "Isolation",
                 "Opponent_H"  = NA  
             )
