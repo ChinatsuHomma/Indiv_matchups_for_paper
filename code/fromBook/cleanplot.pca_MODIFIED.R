@@ -243,7 +243,7 @@
         symbols(
           0,
           0,
-          circles = radius,
+          circles = 0, #radius, # Modified!
           inches = FALSE,
           add = TRUE,
           fg = 2
