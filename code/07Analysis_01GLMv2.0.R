@@ -95,6 +95,8 @@ sink()
 
 if(saveFiles){
     write.csv(AnovaConspecific, "output/07GLM/01GLM_ConspecificMatchups.csv")
+    write.csv(as.data.frame(EmConLS), "output/07GLM/01GLM_EmConspecificLifeStage.csv")
+    write.csv(as.data.frame(EmConSp), "output/07GLM/01GLM_EmConspecificFocalSp.csv")
     report_table(ModelConspecific) %>% write.csv("output/07GLM/ModelConspecific.csv")
 }
 
@@ -146,7 +148,11 @@ sink("output/07GLM/EmIsolationFocalSp.txt")
 EmIsoSp
 sink()
 
+EmIsoLS.df <- as.data.frame(EmIsoLS)
+
 if(saveFiles){
     write.csv(AnovaIsolation, "output/07GLM/01GLM_IsolationMatchups.csv")
+    write.csv(as.data.frame(EmIsoLS), "output/07GLM/01GLM_EmIsolationLifeStage.csv")
+    write.csv(as.data.frame(EmIsoSp), "output/07GLM/01GLM_EmIsolationFocalSp.csv")
     report_table(ModelIsolation) %>% write.csv("output/07GLM/ModelIsolation.csv")
 }
