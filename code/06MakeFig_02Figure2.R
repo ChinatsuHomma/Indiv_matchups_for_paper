@@ -81,7 +81,7 @@ for(i in 1:yN){
     0.45, seq(0, max+0.5, by = 0.5)[i], sprintf(seq(0, max, by = 0.5)[i], fmt = "%#.1f"), cex = 0.8*mag, adj = 1
   )
 }
-mtext(side = 2, "Number of neighbouring species per individual", line = 2, cex = 0.8*mag)
+mtext(side = 2, "Number of neighboring species per individual", line = 2, cex = 0.8*mag)
 
 # x-axis
 axis(side = 1, at = 1:6, labels = FALSE)
