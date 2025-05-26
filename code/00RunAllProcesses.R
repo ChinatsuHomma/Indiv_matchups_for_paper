@@ -131,4 +131,6 @@ if(!dir.exists("data")){
     source("code/07Analysis_00prepGLMv2.0.R")
     message("Building GLM\n")
     source("code/07Analysis_01GLMv2.0.R")
+
+    message("Finish all processes.\n")
 }
