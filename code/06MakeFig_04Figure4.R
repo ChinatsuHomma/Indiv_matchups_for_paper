@@ -9,7 +9,7 @@ scaling <- 1 # 1 = 1, 2 = 2, 0 = both
 library("vegan")
 
 #### functions ####
-source("code/fromBook/cleanplot.pca.R") # modified only about graphic params
+source("code/fromBook/cleanplot.pca_MODIFIED.R") # modified only about graphic params
 
 #### Read data ####
 All     <- read.csv("output/05forFigure/00DataForFig4_02AllMatchups.csv")
