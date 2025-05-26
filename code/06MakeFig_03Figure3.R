@@ -18,6 +18,10 @@ LifeStage <- c(
     "Seedlings", "Small-saplings", "Large-saplings",
     "Poles", "Juveniles", "Subadults"
 )
+LifeStageLabels <- c(
+    "Seedlings", "Small saplings", "Large saplings",
+    "Poles", "Juveniles", "Subadults"
+)
 Sp <- c(
     "Pterocarya", "Fagus", 
     "Acer", "Aesculus", "Ulmus", 
@@ -73,8 +77,8 @@ for(sp in 1:plots){
         # x label
         xlabels <- switch(
             sp,
-            FALSE, FALSE, FALSE, LifeStage,
-            LifeStage, LifeStage, LifeStage
+            FALSE, FALSE, FALSE, LifeStageLabels,
+            LifeStageLabels, LifeStageLabels, LifeStageLabels
         )
         # y label
         ylabels <- switch(

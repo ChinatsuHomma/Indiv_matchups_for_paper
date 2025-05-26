@@ -18,6 +18,10 @@ LifeStage <- c(
     "Seedlings", "Small-saplings", "Large-saplings",
     "Poles", "Juveniles", "Subadults"
 )
+LifeStageLabels <- c(
+    "Seedlings", "Small saplings", "Large saplings",
+    "Poles", "Juveniles", "Subadults"
+)
 Sp <- c(
     "Pterocarya", "Fagus", 
     "Acer", "Aesculus", "Ulmus", 
@@ -85,7 +89,7 @@ axis(side = 1, at = 1:6, labels = FALSE)
 i <- 1
 for(i in 1:6){
     text(
-        i+0.15, (par()$usr[3])-max/15, LifeStage[i], cex = 0.7*mag, srt = 90, pos = 2, offset = 0.5
+        i+0.15, (par()$usr[3])-max/15, LifeStageLabels[i], cex = 0.7*mag, srt = 90, pos = 2, offset = 0.5
     )
 }
 

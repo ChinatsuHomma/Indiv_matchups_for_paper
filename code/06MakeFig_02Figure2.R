@@ -15,7 +15,7 @@ UC[c(6,5), ] <- UC[c(5,6), ]
 
 #### initial object ####
 LifeStage <- c(
-    "Seedlings", "Small-saplings", "Large-saplings",
+    "Seedlings", "Small saplings", "Large saplings",
     "Poles", "Juveniles", "Subadults"
 )
 Sp <- c(
@@ -137,7 +137,7 @@ for(i in 1:yN){
     0.45, seq(0, max, by = 1)[i], sprintf(seq(0, max, by = 1)[i], fmt = "%#.1f"), cex = 0.8*mag, adj = 1
   )
 }
-mtext(side = 2, "Number of neighbouring stems per individual", line = 2, cex = 0.8*mag)
+mtext(side = 2, "Number of neighboring stems per individual", line = 2, cex = 0.8*mag)
 
 # x-axis
 axis(side = 1, at = 1:6, labels = FALSE)
